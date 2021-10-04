@@ -10,6 +10,10 @@ const BalanceSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  orders_quantity: {
+    type: String,
+    require: false,
+  },
 });
 
 module.exports = mongoose.model("Balance", BalanceSchema);

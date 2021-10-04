@@ -22,16 +22,6 @@ module.exports = {
     }
   },
 
-  async store(request, response) {
-    try {
-      const { nome } = request.body;
-      console.log(nome);
-      return response.status(200).json({ nome });
-    } catch (error) {
-      return response.json({ error: error.message });
-    }
-  },
-
   async save(request, response) {
     try {
       const { order_date, amount } = request.body;
@@ -50,6 +40,7 @@ module.exports = {
   },
 
   // pipedrive
+
   // get all deals
   async getDeals(request, response) {
     try {

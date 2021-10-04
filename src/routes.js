@@ -3,7 +3,6 @@ const routes = express.Router();
 const resumeController = require("./controllers/resumeController");
 
 routes.get("/resumes", resumeController.index);
-routes.post("/resumes", resumeController.store);
 
 routes.post("/addDeal", resumeController.addDeal);
 routes.get("/getDeals", resumeController.getDeals);
