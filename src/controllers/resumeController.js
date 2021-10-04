@@ -1,14 +1,14 @@
 const { response } = require("express");
 const axios = require("axios");
 const Balance = require("../models/Balance");
-pipedrive_api_key = process.env.PIPEDRIVE_API_KEY;
+const pipedrive_api_key = process.env.PIPEDRIVE_API_KEY;
 
 const {
   create_deal,
   get_all_Deals,
   filter_won_Deals,
   update_deal,
-} = require("../utils/deals.utils");
+} = require("../utils/pipedrive.utils");
 
 require("dotenv").config();
 
@@ -82,6 +82,17 @@ module.exports = {
   async updateDealStatus(request, response) {
     try {
       const { title, status, id } = request.body;
+
+      // Field validations
+      if (!title | !id)
+        return response
+          .status(400)
+          .send({ error: "O campos 'title' e 'id' são obrigatórios" });
+
+      if (status !== "won" && status !== "lost")
+        return response
+          .status(400)
+          .send({ error: "valor não aceito para o campo status" });
 
       const deal = await update_deal(title, status, id);
       response.status(200).send(deal);

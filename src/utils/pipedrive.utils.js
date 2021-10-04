@@ -1,6 +1,6 @@
 const { response } = require("express");
 const axios = require("axios");
-const Balance = require("../models/Balance");
+
 const pipedrive_api_key = process.env.PIPEDRIVE_API_KEY;
 const domain_company = process.env.DOMAIN_COMPANY_PIPEDRIVE;
 
@@ -76,6 +76,7 @@ const update_deal = async function (title, status, id) {
   try {
     let info = { title, status };
 
+    // valores aceitáveis no campo status são : "won" e "lost"
     let att_deal = axios
       .put(
         `https://${domain_company}.pipedrive.com/v1/deals/${id}?api_token=${pipedrive_api_key}`,

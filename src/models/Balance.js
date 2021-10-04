@@ -10,9 +10,9 @@ const BalanceSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-  orders_quantity: {
+  orders_dayly_quantity: {
     type: String,
-    require: false,
+    require: true,
   },
 });
 
