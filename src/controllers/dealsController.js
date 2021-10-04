@@ -57,7 +57,7 @@ module.exports = {
     try {
       let deals = await filter_won_Deals();
 
-      console.log("Existem " + deals.length + " oportunidades disponíveis");
+      console.log("Existem " + deals.length + " deals disponíveis");
       response.status(200).send(deals);
     } catch (error) {
       response.status(400).json({ error: error.message });

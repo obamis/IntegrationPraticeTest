@@ -1,6 +1,8 @@
 const express = require("express");
 const routes = express.Router();
 const dealsController = require("./controllers/dealsController");
+const ordersController = require("./controllers/ordersController");
+const integrationController = require("./controllers/integrationController");
 
 // testes vão sair
 routes.get("/resumes", dealsController.index);
@@ -14,5 +16,8 @@ routes.put("/updateDeal", dealsController.updateDealStatus);
 routes.post("/addDeal", dealsController.addDeal);
 
 // Bling
+routes.get("/getOrders", ordersController.getOrders);
+routes.post("/addOrder", ordersController.addOrder);
 
+routes.get("/integrate", integrationController.Integrate);
 module.exports = routes;

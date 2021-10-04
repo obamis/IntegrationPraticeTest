@@ -30,7 +30,7 @@ const create_deal = async function (title, org_id) {
 
 const get_all_Deals = async function () {
   try {
-    let deals = axios
+    let deals = await axios
       .get(
         `https://api.pipedrive.com/api/v1/deals?limit=500&api_token=${pipedrive_api_key}`
       )
