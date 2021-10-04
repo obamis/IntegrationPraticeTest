@@ -1,17 +1,17 @@
 const express = require("express");
 const routes = express.Router();
-const resumeController = require("./controllers/resumeController");
+const dealsController = require("./controllers/dealsController");
 
 // testes vão sair
-routes.get("/resumes", resumeController.index);
-routes.post("/save", resumeController.save);
+routes.get("/resumes", dealsController.index);
+routes.post("/save", dealsController.save);
 
 //pipedrive
-routes.get("/getDeals", resumeController.getDeals);
-routes.get("/getWon", resumeController.getWonDeals);
+routes.get("/getDeals", dealsController.getDeals);
+routes.get("/getWon", dealsController.getWonDeals);
 
-routes.put("/updateDeal", resumeController.updateDealStatus);
-routes.post("/addDeal", resumeController.addDeal);
+routes.put("/updateDeal", dealsController.updateDealStatus);
+routes.post("/addDeal", dealsController.addDeal);
 
 // Bling
 
