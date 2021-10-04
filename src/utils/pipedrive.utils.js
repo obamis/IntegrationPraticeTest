@@ -6,11 +6,9 @@ const axios = require("axios");
 const pipedrive_api_key = process.env.PIPEDRIVE_API_KEY;
 const domain_company = process.env.DOMAIN_COMPANY_PIPEDRIVE;
 
-const create_deal = async function (title, org_id) {
+const create_deal = async function (title, org_id, value, status) {
   try {
-    // obrigatory fields
-
-    let info = { title, org_id };
+    let info = { title, org_id, value, status };
     let new_deal = axios
       .post(
         `https://${domain_company}.pipedrive.com/v1/deals?api_token=${pipedrive_api_key}`,

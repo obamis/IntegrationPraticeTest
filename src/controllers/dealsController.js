@@ -67,12 +67,12 @@ module.exports = {
   // addDeal
   async addDeal(request, response) {
     try {
-      const { title, org_id } = request.body;
+      const { title, org_id, value, status } = request.body;
 
       if (!title | !org_id)
         response.status(400).json({ error: "Campo obrigatório faltando" });
 
-      let newDeal = await create_deal(title, org_id);
+      let newDeal = await create_deal(title, org_id, value, status);
       response.status(200).send(newDeal);
     } catch (error) {
       response.status(400).json({ error: error.message });

@@ -8,7 +8,7 @@ const {
   filter_won_Deals,
   update_deal,
 } = require("../utils/pipedrive.utils");
-const { get_orders, add_order } = require("../utils/bling.utils");
+const { get_orders } = require("../utils/bling.utils");
 
 // convert json to xml
 const xml_request = async function (newOrder) {
@@ -86,7 +86,7 @@ const xml_request = async function (newOrder) {
                 { name: "qtde", text: 1 },
                 {
                   name: "vlr_unit",
-                  text: newOrder.value ? newOrder.formatted_value : 0,
+                  text: newOrder.value | 5,
                 },
               ],
             },
@@ -115,6 +115,7 @@ const xml_request = async function (newOrder) {
 };
 
 const won_deals = async function () {
+  const { add_order } = require("../utils/bling.utils");
   try {
     // ***Pega todas as transações com status === won e a qtd de transações
     let won_deals = await filter_won_Deals();
@@ -124,20 +125,37 @@ const won_deals = async function () {
     if (added_deals === 0) return "Nenhuma deal disponível no momento";
 
     // ***pegar as infos necessárias como titulo, valor e afins
-    let xml_won_deals = [];
+    let created_orders = [];
+    let created_orders_errors = [];
 
     for (const deals of won_deals) {
-      //*** Async steps:
+      //***  steps:
 
       //*** chama a função assíncrona aqui dentro para converter request json em xml
 
       //*** add a nova order no bling
+      try {
+        let newOrder = await add_order(deals);
 
-      let order_xml = await xml_request(deals);
-      xml_won_deals.push(order_xml);
+        //**As deals que foram cadastradas com sucesso e que ainda não haviam sido cadastradas anteriormente
+        //**são adicionadas no array
+
+        if (!newOrder.retorno.erros) created_orders.push(newOrder.retorno);
+        else created_orders_errors.push(newOrder.retorno.erros[0].erro);
+      } catch (error) {
+        console.log(error);
+      }
     }
 
-    return xml_won_deals;
+    // ***Steps
+    // *** pegar tamanho do array, fazer a somatória dos valores salvos das "orders"
+    // ***pegar as datas
+    // *** salvar no banco
+
+    //um obj com informações das deals que deram certo e as que deram errado, contendo uma mensagem explicando o motivo do erro
+    let orders_resume = { created_orders, created_orders_errors };
+
+    return orders_resume;
   } catch (error) {
     console.log(error);
   }
