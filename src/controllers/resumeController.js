@@ -1,11 +1,14 @@
 const { response } = require("express");
 const axios = require("axios");
 const Balance = require("../models/Balance");
-const integrations = require("../utils/integrations");
 pipedrive_api_key = process.env.PIPEDRIVE_API_KEY;
 
-const filtered_deals = require("../utils/integrations");
-// const { filterDeals } = require("../utils/integrations");
+const {
+  create_deal,
+  get_all_Deals,
+  filter_won_Deals,
+  update_deal,
+} = require("../utils/deals.utils");
 
 require("dotenv").config();
 
@@ -50,34 +53,49 @@ module.exports = {
   // get all deals
   async getDeals(request, response) {
     try {
-      // let deals = await axios.get(
-      //   "https://api.pipedrive.com/api/v1/deals?limit=500&api_token=0b1ed54fe9ff8c31205c6f379811e5008292a45e"
-      // );
-
-      axios
-        .get(
-          "https://api.pipedrive.com/api/v1/deals?limit=500&api_token=0b1ed54fe9ff8c31205c6f379811e5008292a45e"
-        )
-        .then((data) => {
-          // console.log(data.data);
-          deal = data.data;
-          response.status(200).send({ data: deal });
-        })
-        .catch((err) => response.send(err));
+      let deals = await get_all_Deals();
+      console.log("Existem " + deals.length + " deals abertas");
+      response.status(200).send(deals);
     } catch (error) {
-      return response.json({ error: error.message });
+      response.status(400).json({ error: error.message });
     }
   },
 
   // search for deals with status === won
   async getWonDeals(request, response) {
     try {
-      let deals = await filtered_deals();
+      let deals = await filter_won_Deals();
 
       console.log("Existem " + deals.length + " oportunidades disponíveis");
       response.status(200).send(deals);
     } catch (error) {
-      response.status(500).json({ error: error.message });
+      response.status(400).json({ error: error.message });
+    }
+  },
+
+  // addDeal
+  async addDeal(request, response) {
+    try {
+      const { title, org_id } = request.body;
+
+      if (!title | !org_id)
+        response.status(400).json({ error: "Campo obrigatório faltando" });
+
+      let newDeal = await create_deal(title, org_id);
+      response.status(200).send(newDeal);
+    } catch (error) {
+      response.status(400).json({ error: error.message });
+    }
+  },
+
+  async updateDealStatus(request, response) {
+    try {
+      const { title, status, id } = request.body;
+
+      const deal = await update_deal(title, status, id);
+      response.status(200).send(deal);
+    } catch (error) {
+      response.status(400).json({ error: error.message });
     }
   },
 };
