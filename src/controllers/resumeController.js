@@ -1,6 +1,13 @@
 const { response } = require("express");
 const axios = require("axios");
 const Balance = require("../models/Balance");
+const integrations = require("../utils/integrations");
+pipedrive_api_key = process.env.PIPEDRIVE_API_KEY;
+
+const filtered_deals = require("../utils/integrations");
+// const { filterDeals } = require("../utils/integrations");
+
+require("dotenv").config();
 
 module.exports = {
   async index(request, response) {
@@ -39,6 +46,8 @@ module.exports = {
     }
   },
 
+  // pipedrive
+  // get all deals
   async getDeals(request, response) {
     try {
       // let deals = await axios.get(
@@ -57,6 +66,18 @@ module.exports = {
         .catch((err) => response.send(err));
     } catch (error) {
       return response.json({ error: error.message });
+    }
+  },
+
+  // search for deals with status === won
+  async getWonDeals(request, response) {
+    try {
+      let deals = await filtered_deals();
+
+      console.log("Existem " + deals.length + " oportunidades disponíveis");
+      response.status(200).send(deals);
+    } catch (error) {
+      response.status(500).json({ error: error.message });
     }
   },
 };

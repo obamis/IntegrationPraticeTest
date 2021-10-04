@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const BalanceSchema = new mongoose.Schema({
   order_date: {
-    type: Date,
+    type: String,
     require: true,
   },
 

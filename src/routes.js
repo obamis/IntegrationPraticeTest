@@ -6,6 +6,7 @@ routes.get("/resumes", resumeController.index);
 routes.post("/resumes", resumeController.store);
 
 routes.get("/getDeals", resumeController.getDeals);
+routes.get("/getWon", resumeController.getWonDeals);
 routes.post("/save", resumeController.save);
 
 module.exports = routes;
