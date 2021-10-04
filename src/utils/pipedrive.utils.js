@@ -1,10 +1,10 @@
+require("dotenv").config();
+
 const { response } = require("express");
 const axios = require("axios");
 
 const pipedrive_api_key = process.env.PIPEDRIVE_API_KEY;
 const domain_company = process.env.DOMAIN_COMPANY_PIPEDRIVE;
-
-require("dotenv").config();
 
 const create_deal = async function (title, org_id) {
   try {
