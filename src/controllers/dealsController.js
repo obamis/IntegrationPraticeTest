@@ -1,7 +1,4 @@
 const { response } = require("express");
-const axios = require("axios");
-const Balance = require("../models/Balance");
-const pipedrive_api_key = process.env.PIPEDRIVE_API_KEY;
 
 const {
   createDeal,

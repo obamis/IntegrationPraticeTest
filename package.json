@@ -1,10 +1,11 @@
 {
-  "name": "Integration practice test",
+  "name": "integration",
   "version": "1.0.0",
-  "description": "integration of 2 erp pratice test",
+  "description": "Integration practice test",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --watch src src/server.js"
+    "dev": "nodemon --watch src src/server.js",
+    "start": "node src/server.js"
   },
   "author": "Bruno Magalhães",
   "license": "MIT",
