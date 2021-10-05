@@ -32,7 +32,8 @@ Permite alterar o algum dado da dela criada, incluindo o status, para que a mesm
 Os demais endpoints: /wonDeals, /deals, /integrate, /save, /sort, /getOrders
 
 <br>
-### GET /getOrders : Retorna todas as orders		
+
+### GET/getOrders : Retorna todas as orders		
 
 ### GET/wonDeals : Retorna as deals com status won
 
@@ -44,7 +45,7 @@ Os demais endpoints: /wonDeals, /deals, /integrate, /save, /sort, /getOrders
 
 ### GET/sort : Retorna as transações do banco ordenadas por data e valor total
 
-## A api se encontra disponiível em : <br> https://praticeintegration.herokuapp.com <Sendo necessário apenas o uso do insomnia ou postman para a realização dos testes>
+## A api se encontra disponível em : <br> https://praticeintegration.herokuapp.com <br> Sendo necessário apenas o uso do insomnia ou postman para a realização dos testes<br>
 
 
 
