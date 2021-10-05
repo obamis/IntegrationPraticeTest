@@ -20,7 +20,7 @@ module.exports = {
       let saved_orders = await save_orders();
       return response.status(200).send(saved_orders);
     } catch (error) {
-      return response.status(400).send({ error: " erro na requisição" });
+      return response.status(400);
     }
   },
 
