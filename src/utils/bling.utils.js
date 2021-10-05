@@ -28,9 +28,9 @@ const get_orders = async function () {
   }
 };
 
-const add_order = async function (order) {
+const registerOrder = async function (order) {
   try {
-    // converte o body da requisição p xml
+    // converts json request body to xml
     let order_xml = await xml_request(order);
 
     let newOrder = axios
@@ -42,7 +42,7 @@ const add_order = async function (order) {
 
         return new_order;
       })
-      .catch((err) => console.log(err.message));
+      .catch((error) => console.log(error.message));
 
     return newOrder;
   } catch (error) {
@@ -50,4 +50,4 @@ const add_order = async function (order) {
   }
 };
 
-module.exports = { get_orders, add_order };
+module.exports = { get_orders, registerOrder };

@@ -8,18 +8,19 @@ const integrationController = require("./controllers/integrationController");
 routes.get("/resumes", dealsController.index);
 routes.post("/save", dealsController.save);
 
-//pipedrive
-routes.get("/getDeals", dealsController.getDeals);
-routes.get("/getWon", dealsController.getWonDeals);
+//About pipedrive
+routes.get("/deals", dealsController.getDeals);
+routes.get("/wonDeals", dealsController.getWonDeals);
 
 routes.put("/updateDeal", dealsController.updateDealStatus);
 routes.post("/addDeal", dealsController.addDeal);
 
-// Bling
+// About Bling
 routes.get("/getOrders", ordersController.getOrders);
-routes.post("/addOrder", ordersController.addOrder);
+routes.post("/addOrder", ordersController.registerNewOrder);
 
-routes.get("/integrate", integrationController.Integrate);
-routes.get("/save", integrationController.save);
+// Integration endpoints
+routes.get("/integrate", integrationController.registerDealAsOrder);
+routes.get("/save", integrationController.saveOrders);
 routes.get("/sort", integrationController.sort);
 module.exports = routes;
