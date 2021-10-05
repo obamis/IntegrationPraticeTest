@@ -2,7 +2,7 @@ const Balance = require("../models/Balance");
 const axios = require("axios");
 const jsontoxml = require("jsontoxml");
 const moment = require("moment");
-const { filter_won_Deals } = require("../utils/pipedrive.utils");
+const { filterWonDeals } = require("../utils/pipedrive.utils");
 
 // convert json to xml
 const xml_request = async function (newOrder) {
@@ -112,7 +112,7 @@ const xml_request = async function (newOrder) {
 const won_deals = async function () {
   const { add_order } = require("../utils/bling.utils");
   try {
-    let won_status_orders = await filter_won_Deals();
+    let won_status_orders = await filterWonDeals();
     let added_deals = won_status_orders.length;
 
     //Check if there is no "deal" available
@@ -146,8 +146,8 @@ const won_deals = async function () {
 
 const save_orders = async function (orders) {
   try {
-    const { get_orders } = require("../utils/bling.utils");
-    let won_orders = await get_orders();
+    const { getOrders } = require("../utils/bling.utils");
+    let won_orders = await getOrders();
 
     let data = [];
     for (const order of won_orders) {

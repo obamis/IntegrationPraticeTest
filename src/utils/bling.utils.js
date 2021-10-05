@@ -5,7 +5,7 @@ const { response } = require("express");
 const bling_api_key = process.env.BLING_API_KEY;
 const { xml_request } = require("./integrations.utils");
 
-const get_orders = async function () {
+const getOrders = async function () {
   try {
     let orders = await axios
       .get(`https://bling.com.br/Api/v2/pedidos/json?apikey=${bling_api_key}`)
@@ -15,12 +15,12 @@ const get_orders = async function () {
         try {
           if (orders_collection) return orders_collection.retorno.pedidos;
 
-          return "Nenhum pedido disponível";
+          return "No order available";
         } catch (error) {
           return error;
         }
       })
-      .catch((err) => response.send(err));
+      .catch((error) => response.send(error));
     return orders;
   } catch (error) {
     console.log(error);
@@ -50,4 +50,4 @@ const registerOrder = async function (order) {
   }
 };
 
-module.exports = { get_orders, registerOrder };
+module.exports = { getOrders, registerOrder };

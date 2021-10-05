@@ -22,11 +22,11 @@ const create_deal = async function (title, org_id, value, status) {
       .catch((err) => console.log(err.message));
     return new_deal;
   } catch (error) {
-    response.status(500).json({ error: error.message });
+    console.log({ error: error.message });
   }
 };
 
-const get_all_Deals = async function () {
+const getDeals = async function () {
   try {
     let deals = await axios
       .get(
@@ -37,14 +37,14 @@ const get_all_Deals = async function () {
 
         return deals_collection;
       })
-      .catch((err) => response.send(err));
+      .catch((error) => response.send(error));
     return deals;
   } catch (error) {
-    response.status(500).json({ error: error.message });
+    console.log({ error: error.message });
   }
 };
 
-const filter_won_Deals = async function () {
+const filterWonDeals = async function () {
   try {
     let filtered_deals = axios
       .get(
@@ -53,28 +53,25 @@ const filter_won_Deals = async function () {
       .then((deal) => {
         deal = deal.data.data;
 
-        //cria um array contendo apenas as deals com status === won
+        //create an array containing only deals with status === won
         const deal_won_status = deal.filter(
           (element) => element.status === "won"
         );
 
         let data = deal_won_status;
         return data;
-
-        // console.log(deal_won_status.length);
       })
       .catch((err) => response.send(err));
     return filtered_deals;
   } catch (error) {
-    response.status(500).json({ error: error.message });
+    console.log({ error: error.message });
   }
 };
 
-const update_deal = async function (title, status, id) {
+const updateDeal = async function (title, status, id) {
   try {
     let info = { title, status };
 
-    // valores aceitáveis no campo status são : "won" e "lost"
     let att_deal = axios
       .put(
         `https://${domain_company}.pipedrive.com/v1/deals/${id}?api_token=${pipedrive_api_key}`,
@@ -86,7 +83,9 @@ const update_deal = async function (title, status, id) {
       })
       .catch((err) => err);
     return att_deal;
-  } catch (error) {}
+  } catch (error) {
+    console.log({ error: error.message });
+  }
 };
 
-module.exports = { filter_won_Deals, create_deal, get_all_Deals, update_deal };
+module.exports = { filterWonDeals, create_deal, getDeals, updateDeal };

@@ -5,9 +5,9 @@ const pipedrive_api_key = process.env.PIPEDRIVE_API_KEY;
 
 const {
   create_deal,
-  get_all_Deals,
-  filter_won_Deals,
-  update_deal,
+  getDeals,
+  filterWonDeals,
+  updateDeal,
 } = require("../utils/pipedrive.utils");
 
 require("dotenv").config();
@@ -44,7 +44,7 @@ module.exports = {
   // get all deals
   async getDeals(request, response) {
     try {
-      let deals = await get_all_Deals();
+      let deals = await getDeals();
       console.log("Existem " + deals.length + " deals abertas");
       response.status(200).send(deals);
     } catch (error) {
@@ -55,7 +55,7 @@ module.exports = {
   // search for deals with status === won
   async getWonDeals(request, response) {
     try {
-      let deals = await filter_won_Deals();
+      let deals = await filterWonDeals();
 
       console.log("Existem " + deals.length + " deals disponíveis");
       response.status(200).send(deals);
@@ -94,7 +94,7 @@ module.exports = {
           .status(400)
           .send({ error: "valor não aceito para o campo status" });
 
-      const deal = await update_deal(title, status, id);
+      const deal = await updateDeal(title, status, id);
       response.status(200).send(deal);
     } catch (error) {
       response.status(400).json({ error: error.message });

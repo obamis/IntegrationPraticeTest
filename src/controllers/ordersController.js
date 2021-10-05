@@ -1,13 +1,13 @@
 const { response } = require("express");
 
-const { get_orders, registerOrder } = require("../utils/bling.utils");
+const { getOrders, registerOrder } = require("../utils/bling.utils");
 
 require("dotenv").config();
 
 module.exports = {
   async getOrders(request, response) {
     try {
-      let orders = await get_orders();
+      let orders = await getOrders();
       return response.status(200).send(orders);
     } catch (error) {
       return response.status(400);
