@@ -4,7 +4,7 @@ const Balance = require("../models/Balance");
 const pipedrive_api_key = process.env.PIPEDRIVE_API_KEY;
 
 const {
-  create_deal,
+  createDeal,
   getDeals,
   filterWonDeals,
   updateDeal,
@@ -43,7 +43,7 @@ module.exports = {
       if (!title | !org_id)
         response.status(400).json({ error: "Campo obrigatório faltando" });
 
-      let newDeal = await create_deal(title, org_id, value, status);
+      let newDeal = await createDeal(title, org_id, value, status);
       response.status(200).send(newDeal);
     } catch (error) {
       response.status(400).json({ error: error.message });
