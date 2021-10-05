@@ -6,7 +6,7 @@ const axios = require("axios");
 const pipedrive_api_key = process.env.PIPEDRIVE_API_KEY;
 const domain_company = process.env.DOMAIN_COMPANY_PIPEDRIVE;
 
-const create_deal = async function (title, org_id, value, status) {
+const createDeal = async function (title, org_id, value, status) {
   try {
     let info = { title, org_id, value, status };
     let new_deal = axios
@@ -19,7 +19,7 @@ const create_deal = async function (title, org_id, value, status) {
 
         return deal;
       })
-      .catch((err) => console.log(err.message));
+      .catch((error) => console.log(error.message));
     return new_deal;
   } catch (error) {
     console.log({ error: error.message });
@@ -61,7 +61,7 @@ const filterWonDeals = async function () {
         let data = deal_won_status;
         return data;
       })
-      .catch((err) => response.send(err));
+      .catch((error) => response.send(error));
     return filtered_deals;
   } catch (error) {
     console.log({ error: error.message });
@@ -81,11 +81,11 @@ const updateDeal = async function (title, status, id) {
         deal = deal.data;
         return deal;
       })
-      .catch((err) => err);
+      .catch((error) => error);
     return att_deal;
   } catch (error) {
     console.log({ error: error.message });
   }
 };
 
-module.exports = { filterWonDeals, create_deal, getDeals, updateDeal };
+module.exports = { filterWonDeals, createDeal, getDeals, updateDeal };
