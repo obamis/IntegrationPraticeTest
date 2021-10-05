@@ -32,7 +32,7 @@ npm run start / npm run dev
 👤 **Bruno Magalhães**
 
 * Github: [@obamis](https://github.com/obamis)
-* LinkedIn: [@https:\/\/www.linkedin.com\/in\/bruno-felipe-magalhaes\/](https://linkedin.com/in/https:\/\/www.linkedin.com\/in\/bruno-felipe-magalhaes\/)
+* LinkedIn: [@BrunoMagalhães](https://www.linkedin.com/in/bruno-felipe-magalhaes/)
 
 ## Show your support
 
