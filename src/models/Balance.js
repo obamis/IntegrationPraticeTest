@@ -1,18 +1,22 @@
 const mongoose = require("mongoose");
 
 const BalanceSchema = new mongoose.Schema({
+  idPedido: {
+    type: Number,
+    required: true,
+  },
   order_date: {
-    type: String,
+    type: Date,
     require: true,
   },
 
   amount: {
-    type: String,
+    type: Number,
     require: true,
   },
-  orders_dayly_quantity: {
+  orgName: {
     type: String,
-    require: true,
+    required: true,
   },
 });
 

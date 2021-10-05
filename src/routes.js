@@ -20,4 +20,6 @@ routes.get("/getOrders", ordersController.getOrders);
 routes.post("/addOrder", ordersController.addOrder);
 
 routes.get("/integrate", integrationController.Integrate);
+routes.get("/save", integrationController.save);
+routes.get("/sort", integrationController.sort);
 module.exports = routes;

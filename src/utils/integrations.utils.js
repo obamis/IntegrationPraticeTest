@@ -1,7 +1,9 @@
 const Balance = require("../models/Balance");
 const axios = require("axios");
 const jsontoxml = require("jsontoxml");
-
+const moment = require("moment");
+const balance = Balance;
+const { db } = require("../database");
 const {
   create_deal,
   get_all_Deals,
@@ -14,13 +16,13 @@ const { get_orders } = require("../utils/bling.utils");
 const xml_request = async function (newOrder) {
   const xml = jsontoxml(
     {
-      pedido: [
+      s: [
         {
           name: "cliente",
           children: [
             {
               name: "nome",
-              text: newOrder.org_name || "Dunder Mifflin",
+              text: newOrder.title || "Dunder Mifflin",
             },
             { name: "tipoPessoa", text: "J" },
             { name: "endereco", text: "Av. Paulista" },
@@ -114,6 +116,7 @@ const xml_request = async function (newOrder) {
   return xml;
 };
 
+//save deals on bling as order
 const won_deals = async function () {
   const { add_order } = require("../utils/bling.utils");
   try {
@@ -124,41 +127,127 @@ const won_deals = async function () {
     //Verificação caso não haja nenhuma "deal" disponível
     if (added_deals === 0) return "Nenhuma deal disponível no momento";
 
-    // ***pegar as infos necessárias como titulo, valor e afins
     let created_orders = [];
-    let created_orders_errors = [];
+    let error_created_orders = [];
 
     for (const deals of won_deals) {
-      //***  steps:
-
-      //*** chama a função assíncrona aqui dentro para converter request json em xml
-
-      //*** add a nova order no bling
       try {
         let newOrder = await add_order(deals);
 
-        //**As deals que foram cadastradas com sucesso e que ainda não haviam sido cadastradas anteriormente
-        //**são adicionadas no array
-
-        if (!newOrder.retorno.erros) created_orders.push(newOrder.retorno);
-        else created_orders_errors.push(newOrder.retorno.erros[0].erro);
+        if (newOrder.retorno["erros"]) {
+          error_created_orders.push(newOrder);
+          continue;
+        } else {
+          created_orders.push(newOrder);
+        }
       } catch (error) {
         console.log(error);
       }
     }
 
-    // ***Steps
-    // *** pegar tamanho do array, fazer a somatória dos valores salvos das "orders"
-    // ***pegar as datas
-    // *** salvar no banco
-
-    //um obj com informações das deals que deram certo e as que deram errado, contendo uma mensagem explicando o motivo do erro
-    let orders_resume = { created_orders, created_orders_errors };
-
-    return orders_resume;
+    if (created_orders.length === 0)
+      created_orders = "Nenhuma pedido novo para ser adicionado";
+    return created_orders;
   } catch (error) {
     console.log(error);
   }
 };
 
-module.exports = { xml_request, won_deals };
+const save_orders = async function (orders) {
+  try {
+    const { get_orders } = require("../utils/bling.utils");
+    let won_orders = await get_orders();
+
+    let data = [];
+    for (const order of won_orders) {
+      console.log(order.pedido.cliente.nome);
+
+      let idPedido = parseInt(order.pedido.numero);
+      let order_date = moment(order.pedido.data).toDate();
+      let amount = order.pedido.totalprodutos;
+      let orgName = order.pedido.cliente.nome;
+
+      // checa se já existe no banco antes de salvar
+      let check = await check_before_save(idPedido);
+
+      if (!check) {
+        let created_data = await Balance.create({
+          idPedido,
+          order_date,
+          amount,
+          orgName,
+        });
+
+        data.push(created_data);
+      } else {
+        console.log("já tá salvo");
+        continue;
+      }
+    }
+    if (data.length === 0)
+      return "Esses dados já foram salvos no banco anteriormente";
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const sort_by_date_value = async function () {
+  try {
+    const orders = await Balance.aggregate([
+      {
+        $sort: {
+          amount: -1,
+          idPedido: 1,
+        },
+      },
+      {
+        $project: {
+          idPedido: "$idPedido",
+          amount: "$amount",
+          orgName: "$orgName",
+          order_date: {
+            $dateToString: { format: "%d/%m/%Y", date: "$order_date" },
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$order_date",
+          orders: {
+            $push: "$$ROOT",
+          },
+        },
+      },
+    ]);
+
+    return orders;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const check_before_save = async function (idPedido) {
+  try {
+    let consulta = await Balance.findOne({
+      idPedido: idPedido,
+    })
+      .then((result) => {
+        if (!result) console.log("nulu");
+        return result;
+      })
+      .catch((error) => console.log(error));
+
+    return consulta;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = {
+  xml_request,
+  won_deals,
+  save_orders,
+  check_before_save,
+  sort_by_date_value,
+};

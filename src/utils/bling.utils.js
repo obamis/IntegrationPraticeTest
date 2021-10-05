@@ -10,15 +10,15 @@ const get_orders = async function () {
     let orders = await axios
       .get(`https://bling.com.br/Api/v2/pedidos/json?apikey=${bling_api_key}`)
       .then((order) => {
-        // pega o array contendo todos os pedidos
-        orders_collection = order.data.retorno;
+        let orders_collection = order.data;
 
-        // notificação para caso não haja nenhum pedido disponível
-        orders_collection.length !== 0
-          ? console.log(">0")
-          : (orders_collection = "Nenhum pedido disponível");
+        try {
+          if (orders_collection) return orders_collection.retorno.pedidos;
 
-        return orders_collection;
+          return "Nenhum pedido disponível";
+        } catch (error) {
+          return error;
+        }
       })
       .catch((err) => response.send(err));
     return orders;
