@@ -33,5 +33,5 @@ npm run start / npm run dev
 
 Give a ⭐️ if this project helped you!
 
-***
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
+<br>![gokuhi](https://user-images.githubusercontent.com/56206316/136019861-1f732108-d935-49ba-b03a-fc6fbf48fcaa.jpg)
+
