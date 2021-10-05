@@ -16,6 +16,6 @@ app.use(cors());
 app.use(express.json());
 app.use(routes);
 
-app.listen(port, () => {
+app.listen(port || process.env.PORT, () => {
   console.log(` (-͡°-͜ʖ-͡°) Backend running at http://localhost:${port} (-͡°-͜ʖ-͡°)`);
 });
