@@ -1,53 +1,37 @@
-# Integração entre as plataformas Bling e Pipedrive
+<h1 align="center">Welcome to Pratice Integration Bling and Pipedrive 👋</h1>
+<p>
+  <img alt="Version" src="https://img.shields.io/badge/version-1.0	-blue.svg?cacheSeconds=2592000" />
+  <a href="#" target="_blank">
+    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+  </a>
+</p>
 
-Construindo uma API RESTful usando
-NodeJS.
+> Integration that use NodeJS and Javascript, build an api capable of search at Pipedrive for deals with status equal to won, and insert them as Buy Order at Bling. Made with Javscript, NodeJS, Express, MongoDB, Pipedrive API and Bling API.
 
-## 🚀 Começando
+### ✨ [Demo](https://praticeintegration.herokuapp.com/{requisition})
 
-Endpoints:
-### POST /addDeal
-Permite cria uma deal no Pipedrive
-Para funcionar é necessário que seja enviado no body da requisição 
- Exemplo: <br>
-{
-  "title":"Dunder MIfflin",
-	"org_id":"45",
-	"value":"586.00",
-	"status":"won"
-	
-}
-<br> <br>
+## Install
 
-### PUT /dealUpdate
-Permite alterar o algum dado da dela criada, incluindo o status, para que a mesma possa ser processada.
-  Os campos "id" e "title" são obrigatórios
-  Exemplo: <br>
-{	"id":"26",
-	"title":"Siri Cascudo",
-	"status":"won"
-}
+```sh
+npm install 
+```
 
+## Usage
 
-Os demais endpoints: /wonDeals, /deals, /integrate, /save, /sort, /getOrders
+```sh
+npm run start / npm run dev
+```
 
-<br>
+## Author
 
-### GET/getOrders : Retorna todas as orders		
+👤 **Bruno Magalhães**
 
-### GET/wonDeals : Retorna as deals com status won
+* Github: [@obamis](https://github.com/obamis)
+* LinkedIn: [@https:\/\/www.linkedin.com\/in\/bruno-felipe-magalhaes\/](https://linkedin.com/in/https:\/\/www.linkedin.com\/in\/bruno-felipe-magalhaes\/)
 
-### GET/deals : Retorna todas as deals
+## Show your support
 
-### GET/integrate : Ao acessar o endpoint, são geradas orders na plataforma  da Bling a partir das Deals disponíveis
+Give a ⭐️ if this project helped you!
 
-### GET/save : Registra em banco
-
-### GET/sort : Retorna as transações do banco ordenadas por data e valor total
-
-## A api se encontra disponível em : <br> https://praticeintegration.herokuapp.com <br> Sendo necessário apenas o uso do insomnia ou postman para a realização dos testes<br>
-
-
-
-<br><br>
-![hi](https://user-images.githubusercontent.com/56206316/135991701-0b9080a9-c1d8-4bb6-81a4-bf21105f48a4.jpeg)
+***
+_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
