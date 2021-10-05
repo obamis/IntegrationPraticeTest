@@ -2,15 +2,7 @@ const Balance = require("../models/Balance");
 const axios = require("axios");
 const jsontoxml = require("jsontoxml");
 const moment = require("moment");
-const balance = Balance;
-const { db } = require("../database");
-const {
-  create_deal,
-  get_all_Deals,
-  filter_won_Deals,
-  update_deal,
-} = require("../utils/pipedrive.utils");
-const { get_orders } = require("../utils/bling.utils");
+const { filter_won_Deals } = require("../utils/pipedrive.utils");
 
 // convert json to xml
 const xml_request = async function (newOrder) {
@@ -116,21 +108,20 @@ const xml_request = async function (newOrder) {
   return xml;
 };
 
-//save deals on bling as order
+//save "deals" on "bling" as "order"
 const won_deals = async function () {
   const { add_order } = require("../utils/bling.utils");
   try {
-    // ***Pega todas as transações com status === won e a qtd de transações
-    let won_deals = await filter_won_Deals();
-    let added_deals = won_deals.length;
+    let won_status_orders = await filter_won_Deals();
+    let added_deals = won_status_orders.length;
 
-    //Verificação caso não haja nenhuma "deal" disponível
-    if (added_deals === 0) return "Nenhuma deal disponível no momento";
+    //Check if there is no "deal" available
+    if (added_deals === 0) return "No deals currently available";
 
     let created_orders = [];
     let error_created_orders = [];
 
-    for (const deals of won_deals) {
+    for (const deals of won_status_orders) {
       try {
         let newOrder = await add_order(deals);
 
@@ -146,7 +137,7 @@ const won_deals = async function () {
     }
 
     if (created_orders.length === 0)
-      created_orders = "Nenhuma pedido novo para ser adicionado";
+      created_orders = "No new orders to be added";
     return created_orders;
   } catch (error) {
     console.log(error);
@@ -167,7 +158,7 @@ const save_orders = async function (orders) {
       let amount = order.pedido.totalprodutos;
       let orgName = order.pedido.cliente.nome;
 
-      // checa se já existe no banco antes de salvar
+      // check if it already exists in the database before saving
       let check = await check_before_save(idPedido);
 
       if (!check) {
@@ -180,12 +171,11 @@ const save_orders = async function (orders) {
 
         data.push(created_data);
       } else {
-        console.log("já tá salvo");
+        console.log("These data are already saved");
         continue;
       }
     }
-    if (data.length === 0)
-      return "Esses dados já foram salvos no banco anteriormente";
+    if (data.length === 0) return "These data are already saved";
     return data;
   } catch (error) {
     console.log(error);
@@ -194,7 +184,7 @@ const save_orders = async function (orders) {
 
 const sort_by_date_value = async function () {
   try {
-    const orders = await Balance.aggregate([
+    const orders_sort = await Balance.aggregate([
       {
         $sort: {
           amount: -1,
@@ -221,7 +211,7 @@ const sort_by_date_value = async function () {
       },
     ]);
 
-    return orders;
+    return orders_sort;
   } catch (error) {
     console.log(error);
   }
@@ -229,16 +219,15 @@ const sort_by_date_value = async function () {
 
 const check_before_save = async function (idPedido) {
   try {
-    let consulta = await Balance.findOne({
+    let query_idPedido = await Balance.findOne({
       idPedido: idPedido,
     })
       .then((result) => {
-        if (!result) console.log("nulu");
         return result;
       })
       .catch((error) => console.log(error));
 
-    return consulta;
+    return query_idPedido;
   } catch (error) {
     console.log(error);
   }
