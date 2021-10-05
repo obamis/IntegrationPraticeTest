@@ -13,39 +13,10 @@ const {
 require("dotenv").config();
 
 module.exports = {
-  async index(request, response) {
-    try {
-      const balances = await Balance.find();
-      return response.status(200).json({ balances });
-    } catch (error) {
-      response.status(500).json({ error: error.message });
-    }
-  },
-
-  async save(request, response) {
-    try {
-      const { order_date, amount } = request.body;
-
-      const resume = new Balance({
-        order_date,
-        amount,
-      });
-
-      await resume.save();
-
-      return response.status(201).json({ message: resume });
-    } catch (error) {
-      return response.status(400).json({ error: error.message });
-    }
-  },
-
-  // pipedrive
-
-  // get all deals
   async getDeals(request, response) {
     try {
       let deals = await getDeals();
-      console.log("Existem " + deals.length + " deals abertas");
+      console.log("There are  " + deals.length + "  deals available");
       response.status(200).send(deals);
     } catch (error) {
       response.status(400).json({ error: error.message });

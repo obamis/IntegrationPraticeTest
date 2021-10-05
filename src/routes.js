@@ -4,10 +4,6 @@ const dealsController = require("./controllers/dealsController");
 const ordersController = require("./controllers/ordersController");
 const integrationController = require("./controllers/integrationController");
 
-// testes vão sair
-routes.get("/resumes", dealsController.index);
-routes.post("/save", dealsController.save);
-
 //About pipedrive
 routes.get("/deals", dealsController.getDeals);
 routes.get("/wonDeals", dealsController.getWonDeals);
