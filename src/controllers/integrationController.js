@@ -1,6 +1,10 @@
 const { response } = require("express");
 
-const { won_deals, save_orders } = require("../utils/integrations.utils");
+const {
+  won_deals,
+  save_orders,
+  sort_by_date_value,
+} = require("../utils/integrations.utils");
 
 require("dotenv").config();
 
@@ -29,6 +33,7 @@ module.exports = {
       let ordered_orders = await sort_by_date_value();
       return response.status(200).send(ordered_orders);
     } catch (error) {
+      console.log(error);
       return response.status(400);
     }
   },

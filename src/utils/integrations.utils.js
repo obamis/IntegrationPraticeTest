@@ -110,7 +110,7 @@ const xml_request = async function (newOrder) {
 
 //save "deals" on "bling" as "order"
 const won_deals = async function () {
-  const { add_order } = require("../utils/bling.utils");
+  const { registerOrder } = require("../utils/bling.utils");
   try {
     let won_status_orders = await filterWonDeals();
     let added_deals = won_status_orders.length;
@@ -123,9 +123,9 @@ const won_deals = async function () {
 
     for (const deals of won_status_orders) {
       try {
-        let newOrder = await add_order(deals);
+        let newOrder = await registerOrder(deals);
 
-        if (newOrder.retorno["erros"]) {
+        if (!newOrder) {
           error_created_orders.push(newOrder);
           continue;
         } else {
@@ -151,8 +151,6 @@ const save_orders = async function (orders) {
 
     let data = [];
     for (const order of won_orders) {
-      console.log(order.pedido.cliente.nome);
-
       let idPedido = parseInt(order.pedido.numero);
       let order_date = moment(order.pedido.data).toDate();
       let amount = order.pedido.totalprodutos;
